@@ -1,6 +1,5 @@
 package pl.allegro.agh.distributedsystems.todo.api
 
-import org.hamcrest.Matcher
 import org.hamcrest.Matchers.contains
 import org.hamcrest.Matchers.emptyIterable
 import org.junit.jupiter.api.AfterEach
@@ -30,7 +29,10 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
 
     @Test
     fun `get empty todos`() {
-        expectTodos("user", emptyIterable())
+        getTodos(user = "user")
+            .andExpect {
+                jsonPath("\$.todos", emptyIterable<String>())
+            }
     }
 
     @Test
@@ -49,14 +51,20 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
 
         @Test
         fun `get all for user`() {
-            expectTodos(user = "user", contains("new todo"))
+            getTodos(user = "user")
+                .andExpect {
+                    jsonPath("\$.todos", contains("new todo"))
+                }
         }
 
         @Test
         fun `save second todo`() {
             saveTodo(user = "user", "second todo")
 
-            expectTodos(user = "user", contains("new todo", "second todo"))
+            getTodos(user = "user")
+                .andExpect {
+                    jsonPath("\$.todos", contains("new todo", "second todo"))
+                }
         }
     }
 
@@ -75,17 +83,16 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
             "user2, user2 todo",
         )
         fun `get all for user`(user: String, todo: String) {
-            expectTodos(user, contains(todo))
+            getTodos(user)
+                .andExpect {
+                    jsonPath("\$.todos", contains(todo))
+                }
         }
     }
 
-    private fun expectTodos(user: String, matcher: Matcher<Iterable<String>>) =
-        mockMvc.get("/todos") {
-            with(user(user))
-        }.andExpect {
-            status { is2xxSuccessful() }
-            jsonPath("\$.todos", matcher)
-        }
+    private fun getTodos(user: String) =
+        mockMvc.get("/todos") { with(user(user)) }
+            .andExpect { status { is2xxSuccessful() } }
 
     private fun saveTodo(user: String, name: String) =
         mockMvc.post("/todos") {
