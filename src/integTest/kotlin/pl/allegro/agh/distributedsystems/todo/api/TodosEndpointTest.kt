@@ -1,7 +1,6 @@
 package pl.allegro.agh.distributedsystems.todo.api
 
-import org.hamcrest.Matchers.contains
-import org.hamcrest.Matchers.emptyIterable
+import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -39,6 +38,14 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
     fun `deny access on missing authentication`() {
         mockMvc.get("/todos").andExpect { status { isForbidden() } }
         mockMvc.post("/todos").andExpect { status { isForbidden() } }
+    }
+
+    @Test
+    fun `save single todo`() {
+        saveTodo(user = "user", "new todo")
+            .andExpect {
+                jsonPath("\$.name", equalTo("new todo"))
+            }
     }
 
     @Nested

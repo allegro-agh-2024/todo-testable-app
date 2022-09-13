@@ -15,8 +15,9 @@ class TodosEndpoint(
         TodosResponseDto(todosRepository.getAll(principal.name).map { TodoDto(it) })
 
     @PostMapping(consumes = ["application/json"])
-    fun saveTodo(principal: Principal, @RequestBody saveTodoDto: SaveTodoDto) {
+    fun saveTodo(principal: Principal, @RequestBody saveTodoDto: SaveTodoDto): TodoDto {
         todosRepository.save(principal.name, saveTodoDto.name)
+        return TodoDto(saveTodoDto.name)
     }
 }
 
