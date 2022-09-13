@@ -1,7 +1,6 @@
 package pl.allegro.agh.distributedsystems.todo.api
 
 import org.hamcrest.Matchers.*
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -12,19 +11,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
-import pl.allegro.agh.distributedsystems.todo.infrastructure.todos.InMemoryTodosRepository
 
 @SpringBootTest
+@ActiveProfiles("integration")
 @AutoConfigureMockMvc
 class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
-
-    @AfterEach
-    fun `clean todos`(@Autowired todosRepository: InMemoryTodosRepository) {
-        todosRepository.clear()
-    }
 
     @Test
     fun `get empty todos`() {

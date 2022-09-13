@@ -1,0 +1,2 @@
+org.springframework.test.context.TestExecutionListener=\
+  pl.allegro.agh.distributedsystems.todo.setup.MongoCleaningTestExecutionListener
