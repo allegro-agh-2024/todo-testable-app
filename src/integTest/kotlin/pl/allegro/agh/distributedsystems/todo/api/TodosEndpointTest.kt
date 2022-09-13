@@ -31,7 +31,7 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
     fun `get empty todos`() {
         getTodos(user = "user")
             .andExpect {
-                jsonPath("\$.todos", emptyIterable<String>())
+                jsonPath("\$.todos", emptyIterable<Any>())
             }
     }
 
@@ -53,7 +53,7 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
         fun `get all for user`() {
             getTodos(user = "user")
                 .andExpect {
-                    jsonPath("\$.todos", contains("new todo"))
+                    jsonPath("\$.todos.*.name", contains("new todo"))
                 }
         }
 
@@ -63,7 +63,7 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
 
             getTodos(user = "user")
                 .andExpect {
-                    jsonPath("\$.todos", contains("new todo", "second todo"))
+                    jsonPath("\$.todos.*.name", contains("new todo", "second todo"))
                 }
         }
     }
@@ -85,7 +85,7 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
         fun `get all for user`(user: String, todo: String) {
             getTodos(user)
                 .andExpect {
-                    jsonPath("\$.todos", contains(todo))
+                    jsonPath("\$.todos.*.name", contains(todo))
                 }
         }
     }

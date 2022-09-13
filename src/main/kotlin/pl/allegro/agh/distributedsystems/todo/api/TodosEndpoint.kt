@@ -11,7 +11,8 @@ class TodosEndpoint(
 ) {
 
     @GetMapping(produces = ["application/json"])
-    fun todosList(principal: Principal) = TodosResponseDto(todosRepository.getAll(principal.name))
+    fun todosList(principal: Principal) =
+        TodosResponseDto(todosRepository.getAll(principal.name).map { TodoDto(it) })
 
     @PostMapping(consumes = ["application/json"])
     fun saveTodo(principal: Principal, @RequestBody saveTodoDto: SaveTodoDto) {
@@ -19,6 +20,10 @@ class TodosEndpoint(
     }
 }
 
-data class TodosResponseDto(val todos: List<String>)
+data class TodosResponseDto(val todos: List<TodoDto>)
 
 data class SaveTodoDto(val name: String)
+
+data class TodoDto(
+    val name: String,
+)
