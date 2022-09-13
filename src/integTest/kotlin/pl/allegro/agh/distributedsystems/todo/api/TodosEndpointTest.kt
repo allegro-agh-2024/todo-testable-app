@@ -14,14 +14,15 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import pl.allegro.agh.distributedsystems.todo.infrastructure.todos.InMemoryTodosRepository
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
 
     @AfterEach
-    fun `clean todos`(@Autowired todosEndpoint: TodosEndpoint) {
-        todosEndpoint.clear()
+    fun `clean todos`(@Autowired todosRepository: InMemoryTodosRepository) {
+        todosRepository.clear()
     }
 
     @Test

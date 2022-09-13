@@ -1,22 +1,21 @@
 package pl.allegro.agh.distributedsystems.todo.api
 
 import org.springframework.web.bind.annotation.*
-import java.util.concurrent.CopyOnWriteArrayList
+import pl.allegro.agh.distributedsystems.todo.domain.todos.TodosRepository
 
 @RestController
 @RequestMapping("/todos")
-class TodosEndpoint {
-    private val todos: MutableList<String> = CopyOnWriteArrayList()
+class TodosEndpoint(
+    private val todosRepository: TodosRepository,
+) {
 
     @GetMapping(produces = ["application/json"])
-    fun todosList() = TodosResponseDto(todos)
+    fun todosList() = TodosResponseDto(todosRepository.getAll())
 
     @PostMapping(consumes = ["application/json"])
     fun saveTodo(@RequestBody saveTodoDto: SaveTodoDto) {
-        todos += saveTodoDto.name
+        todosRepository.save(saveTodoDto.name)
     }
-
-    fun clear() = todos.clear()
 }
 
 data class TodosResponseDto(val todos: List<String>)
