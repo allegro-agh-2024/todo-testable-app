@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
@@ -52,13 +53,16 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
     }
 
     private fun expectTodos(matcher: Matcher<Iterable<String>>) =
-        mockMvc.get("/todos").andExpect {
+        mockMvc.get("/todos") {
+            with(user("user"))
+        }.andExpect {
             status { is2xxSuccessful() }
             jsonPath("\$.todos", matcher)
         }
 
     private fun saveTodo(name: String) =
         mockMvc.post("/todos") {
+            with(user("user"))
             contentType = MediaType.APPLICATION_JSON
             content = """ { "name": "$name" } """
         }.andExpect {

@@ -18,11 +18,13 @@ dependencies {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api")
 
     integTestImplementation("org.springframework.boot:spring-boot-starter-test")
+    integTestImplementation("org.springframework.security:spring-security-test")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
