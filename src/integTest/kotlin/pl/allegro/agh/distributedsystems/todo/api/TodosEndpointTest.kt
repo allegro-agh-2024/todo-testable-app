@@ -7,6 +7,8 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -28,7 +30,7 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
 
     @Test
     fun `get empty todos`() {
-        expectTodos(emptyIterable())
+        expectTodos("user", emptyIterable())
     }
 
     @Nested
@@ -36,33 +38,52 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
 
         @BeforeEach
         fun `save single todo`() {
-            saveTodo("new todo")
+            saveTodo(user = "user", "new todo")
         }
 
         @Test
-        fun `get all`() {
-            expectTodos(contains("new todo"))
+        fun `get all for user`() {
+            expectTodos(user = "user", contains("new todo"))
         }
 
         @Test
         fun `save second todo`() {
-            saveTodo("second todo")
+            saveTodo(user = "user", "second todo")
 
-            expectTodos(contains("new todo", "second todo"))
+            expectTodos(user = "user", contains("new todo", "second todo"))
         }
     }
 
-    private fun expectTodos(matcher: Matcher<Iterable<String>>) =
+    @Nested
+    inner class `saves by multiple users` {
+
+        @BeforeEach
+        fun `save single todo`() {
+            saveTodo(user = "user1", "user1 todo")
+            saveTodo(user = "user2", "user2 todo")
+        }
+
+        @ParameterizedTest
+        @CsvSource(
+            "user1, user1 todo",
+            "user2, user2 todo",
+        )
+        fun `get all for user`(user: String, todo: String) {
+            expectTodos(user, contains(todo))
+        }
+    }
+
+    private fun expectTodos(user: String, matcher: Matcher<Iterable<String>>) =
         mockMvc.get("/todos") {
-            with(user("user"))
+            with(user(user))
         }.andExpect {
             status { is2xxSuccessful() }
             jsonPath("\$.todos", matcher)
         }
 
-    private fun saveTodo(name: String) =
+    private fun saveTodo(user: String, name: String) =
         mockMvc.post("/todos") {
-            with(user("user"))
+            with(user(user))
             contentType = MediaType.APPLICATION_JSON
             content = """ { "name": "$name" } """
         }.andExpect {

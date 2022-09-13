@@ -22,6 +22,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
 
     integTestImplementation("org.springframework.boot:spring-boot-starter-test")
     integTestImplementation("org.springframework.security:spring-security-test")
