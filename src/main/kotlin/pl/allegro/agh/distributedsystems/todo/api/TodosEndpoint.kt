@@ -2,34 +2,25 @@ package pl.allegro.agh.distributedsystems.todo.api
 
 import org.springframework.web.bind.annotation.*
 import pl.allegro.agh.distributedsystems.todo.domain.todos.Todo
-import pl.allegro.agh.distributedsystems.todo.domain.todos.TodosRepository
+import pl.allegro.agh.distributedsystems.todo.domain.todos.TodosService
 import java.security.Principal
-import java.util.*
 
 @RestController
 @RequestMapping("/todos")
 class TodosEndpoint(
-    private val todosRepository: TodosRepository,
+    private val todosService: TodosService,
 ) {
 
     @GetMapping(produces = ["application/json"])
     fun todosList(principal: Principal) =
-        TodosResponseDto(todosRepository.getAll(principal.name).map { TodoDto(it.name, it.id) })
+        todosService.getAll(principal.name).toDto()
 
     @PostMapping(consumes = ["application/json"])
-    fun saveTodo(principal: Principal, @RequestBody saveTodoDto: SaveTodoDto): TodoDto {
-        val todo = Todo(
-            id = UUID.randomUUID().toString(),
-            user = principal.name,
-            name = saveTodoDto.name,
-        )
-        return todosRepository.save(todo).let {
-            TodoDto(
-                name = it.name,
-                id = it.id,
-            )
-        }
-    }
+    fun saveTodo(principal: Principal, @RequestBody saveTodoDto: SaveTodoDto) =
+        todosService.save(principal.name, saveTodoDto.name).toDto()
+
+    private fun List<Todo>.toDto() = TodosResponseDto(map { it.toDto() })
+    private fun Todo.toDto() = TodoDto(name, id)
 }
 
 data class TodosResponseDto(val todos: List<TodoDto>)
