@@ -45,6 +45,7 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
         saveTodo(user = "user", "new todo")
             .andExpect {
                 jsonPath("\$.name", equalTo("new todo"))
+                jsonPath("\$.id", matchesRegex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$"))
             }
     }
 
