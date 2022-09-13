@@ -1,6 +1,7 @@
 package pl.allegro.agh.distributedsystems.todo.api
 
 import org.springframework.web.bind.annotation.*
+import pl.allegro.agh.distributedsystems.todo.domain.todos.Todo
 import pl.allegro.agh.distributedsystems.todo.domain.todos.TodosRepository
 import java.security.Principal
 import java.util.*
@@ -13,13 +14,21 @@ class TodosEndpoint(
 
     @GetMapping(produces = ["application/json"])
     fun todosList(principal: Principal) =
-        TodosResponseDto(todosRepository.getAll(principal.name).map { TodoDto(it, "") })
+        TodosResponseDto(todosRepository.getAll(principal.name).map { TodoDto(it.name, "") })
 
     @PostMapping(consumes = ["application/json"])
     fun saveTodo(principal: Principal, @RequestBody saveTodoDto: SaveTodoDto): TodoDto {
-        val id = UUID.randomUUID().toString()
-        todosRepository.save(principal.name, saveTodoDto.name)
-        return TodoDto(saveTodoDto.name, id)
+        val todo = Todo(
+            id = UUID.randomUUID().toString(),
+            user = principal.name,
+            name = saveTodoDto.name,
+        )
+        return todosRepository.save(todo).let {
+            TodoDto(
+                name = it.name,
+                id = it.id,
+            )
+        }
     }
 }
 

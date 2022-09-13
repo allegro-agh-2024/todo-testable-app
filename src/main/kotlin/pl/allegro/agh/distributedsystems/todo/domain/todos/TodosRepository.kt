@@ -1,6 +1,12 @@
 package pl.allegro.agh.distributedsystems.todo.domain.todos
 
 interface TodosRepository {
-    fun getAll(user: String): List<String>
-    fun save(user: String, name: String)
+    fun getAll(user: String): List<Todo>
+    fun save(todo: Todo): Todo
 }
+
+data class Todo(
+    val id: String,
+    val user: String,
+    val name: String,
+)
