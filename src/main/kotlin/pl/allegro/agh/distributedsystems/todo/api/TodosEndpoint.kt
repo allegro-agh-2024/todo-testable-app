@@ -15,6 +15,8 @@ class TodosEndpoint {
     fun saveTodo(@RequestBody saveTodoDto: SaveTodoDto) {
         todos += saveTodoDto.name
     }
+
+    fun clear() = todos.clear()
 }
 
 data class TodosResponseDto(val todos: List<String>)

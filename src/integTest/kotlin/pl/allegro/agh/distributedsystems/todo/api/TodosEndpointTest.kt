@@ -3,6 +3,7 @@ package pl.allegro.agh.distributedsystems.todo.api
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.contains
 import org.hamcrest.Matchers.emptyIterable
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -17,6 +18,11 @@ import org.springframework.test.web.servlet.post
 @SpringBootTest
 @AutoConfigureMockMvc
 class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
+
+    @AfterEach
+    fun `clean todos`(@Autowired todosEndpoint: TodosEndpoint) {
+        todosEndpoint.clear()
+    }
 
     @Test
     fun `get empty todos`() {
@@ -34,6 +40,13 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
         @Test
         fun `get all`() {
             expectTodos(contains("new todo"))
+        }
+
+        @Test
+        fun `save second todo`() {
+            saveTodo("second todo")
+
+            expectTodos(contains("new todo", "second todo"))
         }
     }
 
