@@ -27,5 +27,8 @@ class SecurityConfiguration {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain = http
         .csrf().disable()
+        .authorizeRequests {
+            it.antMatchers("/todos/**").authenticated()
+        }
         .build()
 }

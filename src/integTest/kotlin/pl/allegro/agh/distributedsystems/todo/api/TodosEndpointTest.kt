@@ -33,6 +33,12 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
         expectTodos("user", emptyIterable())
     }
 
+    @Test
+    fun `deny access on missing authentication`() {
+        mockMvc.get("/todos").andExpect { status { isForbidden() } }
+        mockMvc.post("/todos").andExpect { status { isForbidden() } }
+    }
+
     @Nested
     inner class `single saved` {
 
