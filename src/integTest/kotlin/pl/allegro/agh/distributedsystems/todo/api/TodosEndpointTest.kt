@@ -58,6 +58,17 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
         }
 
         @Test
+        fun `get id`() {
+            getTodos(user = "user")
+                .andExpect {
+                    jsonPath(
+                        "\$.todos[0].id",
+                        matchesRegex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
+                    )
+                }
+        }
+
+        @Test
         fun `get all for user`() {
             getTodos(user = "user")
                 .andExpect {
