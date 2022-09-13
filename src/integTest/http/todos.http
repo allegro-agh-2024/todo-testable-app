@@ -1,0 +1,12 @@
+### Get all for user
+GET {{host}}/todos
+Authorization: Basic user password
+
+### Create todo
+POST {{host}}/todos
+Authorization: Basic user password
+Content-Type: application/json
+
+{
+  "name": "new todo"
+}

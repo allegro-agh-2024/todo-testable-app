@@ -31,8 +31,8 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
 
     @Test
     fun `deny access on missing authentication`() {
-        mockMvc.get("/todos").andExpect { status { isForbidden() } }
-        mockMvc.post("/todos").andExpect { status { isForbidden() } }
+        mockMvc.get("/todos").andExpect { status { isUnauthorized() } }
+        mockMvc.post("/todos").andExpect { status { isUnauthorized() } }
     }
 
     @Test

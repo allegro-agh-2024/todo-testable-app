@@ -18,7 +18,7 @@ class SecurityConfiguration {
         .apply {
             createUser(
                 User.withUsername("user")
-                    .password("password")
+                    .password("{noop}password")
                     .roles("USER")
                     .build()
             )
@@ -30,5 +30,7 @@ class SecurityConfiguration {
         .authorizeRequests {
             it.antMatchers("/todos/**").authenticated()
         }
+        .httpBasic()
+        .and()
         .build()
 }
