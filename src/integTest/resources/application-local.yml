@@ -1,0 +1,6 @@
+app:
+  users:
+    - username: "user"
+      password: "{noop}password"
+    - username: "user2"
+      password: "{noop}password2"
