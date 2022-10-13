@@ -1,11 +1,18 @@
 package pl.allegro.agh.distributedsystems.todo.domain.todos
 
+import io.mockk.every
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
+import pl.allegro.agh.distributedsystems.todo.domain.users.User
+import pl.allegro.agh.distributedsystems.todo.domain.users.UserRepository
 import pl.allegro.agh.distributedsystems.todo.infrastructure.todos.InMemoryTodosRepository
 import strikt.api.expectThat
 import strikt.api.expectThrows
@@ -13,9 +20,12 @@ import strikt.assertions.hasSize
 import strikt.assertions.isEqualTo
 import strikt.assertions.message
 
-class TodosServiceTest {
+@ExtendWith(MockKExtension::class)
+class TodosServiceTest(
+    @RelaxedMockK private val userRepository: UserRepository,
+) {
     private val repository = InMemoryTodosRepository()
-    private val service = TodosService(repository)
+    private val service = TodosService(repository, userRepository)
 
     @AfterEach
     fun tearDown() {
@@ -51,6 +61,23 @@ class TodosServiceTest {
         fun `accept below threshold`(length: Int) {
             service.save("user", "l".repeat(length))
             expectThat(service.getAll("user")).hasSize(1)
+        }
+    }
+
+    @Nested
+    inner class `user blocking` {
+
+        @Test
+        fun `reject saves by blocked user`() {
+            every { userRepository.findByName(any()) } returns User(
+                username = "user",
+                status = User.Status.BLOCKED,
+            )
+
+            expectThrows<TodosService.CannotSaveException> {
+                service.save("user", "todo name")
+            }.message.isEqualTo("User is blocked")
+            verify(exactly = 1) { userRepository.findByName("user") }
         }
     }
 }

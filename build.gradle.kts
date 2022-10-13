@@ -17,6 +17,7 @@ dependencies {
     implementation(platform("org.testcontainers:testcontainers-bom:1.17.5"))
 
     implementation("io.strikt:strikt-core:0.34.1")
+    implementation("io.mockk:mockk:1.13.2")
 }
 
 dependencies {
@@ -28,6 +29,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("io.strikt:strikt-core")
+    testImplementation("io.mockk:mockk")
 
     integTestImplementation("org.springframework.boot:spring-boot-starter-test")
     integTestImplementation("org.springframework.security:spring-security-test")

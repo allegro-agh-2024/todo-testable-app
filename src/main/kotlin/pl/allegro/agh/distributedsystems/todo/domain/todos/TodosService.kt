@@ -1,15 +1,19 @@
 package pl.allegro.agh.distributedsystems.todo.domain.todos
 
+import pl.allegro.agh.distributedsystems.todo.domain.users.User
+import pl.allegro.agh.distributedsystems.todo.domain.users.UserRepository
 import java.util.*
 
 class TodosService(
     private val todosRepository: TodosRepository,
+    private val userRepository: UserRepository,
 ) {
     fun getAll(user: String): List<Todo> = todosRepository.getAll(user)
 
     fun save(user: String, name: String): Todo = when {
         name.length >= 100 -> throw CannotSaveException("Name is too long")
         name.length <= 4 -> throw CannotSaveException("Name is too short")
+        userRepository.findByName(user)?.status == User.Status.BLOCKED -> throw CannotSaveException("User is blocked")
         else -> Todo(
             id = UUID.randomUUID().toString(),
             user = user,

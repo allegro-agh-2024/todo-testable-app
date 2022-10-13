@@ -6,5 +6,8 @@ interface UserRepository {
 
 data class User(
     val username: String,
-    val password: String,
-)
+    val password: String = "",
+    val status: Status = Status.ACTIVE,
+) {
+    enum class Status { ACTIVE, BLOCKED }
+}
