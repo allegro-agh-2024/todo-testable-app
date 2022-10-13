@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.TestPropertySource
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
@@ -19,6 +20,19 @@ import org.springframework.test.web.servlet.post
 @SpringBootTest
 @ActiveProfiles("integration")
 @AutoConfigureMockMvc
+@TestPropertySource(
+    properties = [
+        "app.users[0].username=user",
+        "app.users[0].password=pass",
+        "app.users[0].status=ACTIVE",
+        "app.users[1].username=user1",
+        "app.users[1].password=pass",
+        "app.users[1].status=ACTIVE",
+        "app.users[2].username=user2",
+        "app.users[2].password=pass",
+        "app.users[2].status=ACTIVE",
+    ]
+)
 class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
 
     @Test

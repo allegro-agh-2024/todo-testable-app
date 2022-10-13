@@ -12,7 +12,7 @@ class PropertiesUserRepository(
             User(
                 username = it.username,
                 password = it.password,
-                status = User.Status.ACTIVE,
+                status = User.Status.valueOf(it.status),
             )
         }
         .associateBy { it.username }

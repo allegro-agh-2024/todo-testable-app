@@ -2,5 +2,10 @@ app:
   users:
     - username: "user"
       password: "{noop}password"
+      status: ACTIVE
     - username: "user2"
       password: "{noop}password2"
+      status: ACTIVE
+    - username: "user3"
+      password: "{noop}password3"
+      status: BLOCKED

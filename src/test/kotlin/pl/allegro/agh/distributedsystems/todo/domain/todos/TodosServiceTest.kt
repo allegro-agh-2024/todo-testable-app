@@ -5,6 +5,7 @@ import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.verify
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -32,40 +33,63 @@ class TodosServiceTest(
         repository.clear()
     }
 
-    @Test
-    fun `generate unique ids on save`() {
-        val uniqueIds = (1..100)
-            .map { service.save("user", "todo name $it") }
-            .map { it.id }
-            .toSet()
-
-        expectThat(uniqueIds).hasSize(100)
-    }
-
     @Nested
-    inner class `todo length` {
+    inner class `active user` {
+        private val activeUser = "user"
 
-        @ParameterizedTest
-        @CsvSource(
-            "4,   Name is too short",
-            "100, Name is too long",
-        )
-        fun `reject too long`(length: Int, message: String) {
-            expectThrows<TodosService.CannotSaveException> {
-                service.save("user", "l".repeat(length))
-            }.message.isEqualTo(message)
+        @BeforeEach
+        fun `set active user`() {
+            every { userRepository.findByName(any()) } returns User(
+                username = activeUser,
+                status = User.Status.ACTIVE,
+            )
         }
 
-        @ParameterizedTest
-        @ValueSource(ints = [5, 99])
-        fun `accept below threshold`(length: Int) {
-            service.save("user", "l".repeat(length))
-            expectThat(service.getAll("user")).hasSize(1)
+        @Test
+        fun `generate unique ids on save`() {
+            val uniqueIds = (1..100)
+                .map { service.save(activeUser, "todo name $it") }
+                .map { it.id }
+                .toSet()
+
+            expectThat(uniqueIds).hasSize(100)
+        }
+
+        @Nested
+        inner class `todo length` {
+
+            @ParameterizedTest
+            @CsvSource(
+                "4,   Name is too short",
+                "100, Name is too long",
+            )
+            fun `reject too long`(length: Int, message: String) {
+                expectThrows<TodosService.CannotSaveException> {
+                    service.save(activeUser, "l".repeat(length))
+                }.message.isEqualTo(message)
+            }
+
+            @ParameterizedTest
+            @ValueSource(ints = [5, 99])
+            fun `accept below threshold`(length: Int) {
+                service.save(activeUser, "l".repeat(length))
+                expectThat(service.getAll(activeUser)).hasSize(1)
+            }
         }
     }
 
     @Nested
     inner class `user blocking` {
+
+        @Test
+        fun `reject saves by missing user`() {
+            every { userRepository.findByName(any()) } returns null
+
+            expectThrows<TodosService.CannotSaveException> {
+                service.save("user", "todo name")
+            }.message.isEqualTo("User is not active")
+            verify(exactly = 1) { userRepository.findByName("user") }
+        }
 
         @Test
         fun `reject saves by blocked user`() {
@@ -76,7 +100,7 @@ class TodosServiceTest(
 
             expectThrows<TodosService.CannotSaveException> {
                 service.save("user", "todo name")
-            }.message.isEqualTo("User is blocked")
+            }.message.isEqualTo("User is not active")
             verify(exactly = 1) { userRepository.findByName("user") }
         }
     }
