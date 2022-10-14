@@ -16,8 +16,10 @@ dependencies {
     implementation(platform("org.junit:junit-bom:5.9.1"))
     implementation(platform("org.testcontainers:testcontainers-bom:1.17.5"))
 
-    implementation("io.strikt:strikt-core:0.34.1")
-    implementation("io.mockk:mockk:1.13.2")
+    constraints {
+        implementation("io.strikt:strikt-core:0.34.1")
+        implementation("io.mockk:mockk:1.13.2")
+    }
 }
 
 dependencies {
