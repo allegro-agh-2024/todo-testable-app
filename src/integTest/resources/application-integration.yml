@@ -1,3 +1,4 @@
-context:
-  initializer:
-    classes: pl.allegro.agh.distributedsystems.todo.setup.MongoInitializer
+spring:
+  mongodb:
+    embedded:
+      version: 5.0.12

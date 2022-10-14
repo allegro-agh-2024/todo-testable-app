@@ -14,11 +14,11 @@ dependencies {
     implementation(enforcedPlatform(kotlin("bom")))
     implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.4"))
     implementation(platform("org.junit:junit-bom:5.9.1"))
-    implementation(platform("org.testcontainers:testcontainers-bom:1.17.5"))
 
     constraints {
         implementation("io.strikt:strikt-core:0.34.1")
         implementation("io.mockk:mockk:1.13.2")
+        implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:3.4.11")
     }
 }
 
@@ -35,7 +35,7 @@ dependencies {
 
     integTestImplementation("org.springframework.boot:spring-boot-starter-test")
     integTestImplementation("org.springframework.security:spring-security-test")
-    integTestImplementation("org.testcontainers:mongodb")
+    integTestImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
