@@ -4,8 +4,6 @@ import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -25,12 +23,6 @@ import org.springframework.test.web.servlet.post
         "app.users[0].username=user",
         "app.users[0].password=pass",
         "app.users[0].status=ACTIVE",
-        "app.users[1].username=user1",
-        "app.users[1].password=pass",
-        "app.users[1].status=ACTIVE",
-        "app.users[2].username=user2",
-        "app.users[2].password=pass",
-        "app.users[2].status=ACTIVE",
     ]
 )
 class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
@@ -92,28 +84,6 @@ class TodosEndpointTest(@Autowired private val mockMvc: MockMvc) {
             getTodos(user = "user")
                 .andExpect {
                     jsonPath("\$.todos.*.name", contains("new todo", "second todo"))
-                }
-        }
-    }
-
-    @Nested
-    inner class `saves by multiple users` {
-
-        @BeforeEach
-        fun `save single todo`() {
-            saveTodo(user = "user1", "user1 todo")
-            saveTodo(user = "user2", "user2 todo")
-        }
-
-        @ParameterizedTest
-        @CsvSource(
-            "user1, user1 todo",
-            "user2, user2 todo",
-        )
-        fun `get all for user`(user: String, todo: String) {
-            getTodos(user)
-                .andExpect {
-                    jsonPath("\$.todos.*.name", contains(todo))
                 }
         }
     }
