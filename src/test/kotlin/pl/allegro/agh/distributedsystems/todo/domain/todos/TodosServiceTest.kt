@@ -9,9 +9,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
-import org.junit.jupiter.params.provider.ValueSource
 import pl.allegro.agh.distributedsystems.todo.domain.users.User
 import pl.allegro.agh.distributedsystems.todo.domain.users.UserRepository
 import pl.allegro.agh.distributedsystems.todo.infrastructure.todos.InMemoryTodosRepository
@@ -53,28 +50,6 @@ class TodosServiceTest(
                 .toSet()
 
             expectThat(uniqueIds).hasSize(100)
-        }
-
-        @Nested
-        inner class `todo length` {
-
-            @ParameterizedTest
-            @CsvSource(
-                "4,   Name is too short",
-                "100, Name is too long",
-            )
-            fun `reject too long`(length: Int, message: String) {
-                expectThrows<TodosService.CannotSaveException> {
-                    service.save(activeUser, "l".repeat(length))
-                }.message.isEqualTo(message)
-            }
-
-            @ParameterizedTest
-            @ValueSource(ints = [5, 99])
-            fun `accept below threshold`(length: Int) {
-                service.save(activeUser, "l".repeat(length))
-                expectThat(service.getAll(activeUser)).hasSize(1)
-            }
         }
     }
 
