@@ -1,0 +1,3 @@
+springdoc:
+  packagesToScan: pl.allegro.agh.distributedsystems.todo.api
+  pathsToMatch: /**

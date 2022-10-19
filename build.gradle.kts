@@ -16,6 +16,7 @@ dependencies {
     implementation(platform("org.junit:junit-bom:5.9.1"))
 
     constraints {
+        implementation("org.springdoc:springdoc-openapi-ui:1.6.12")
         implementation("io.strikt:strikt-core:0.34.1")
         implementation("io.mockk:mockk:1.13.2")
         implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:3.4.11")
@@ -27,6 +28,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.springdoc:springdoc-openapi-ui")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
