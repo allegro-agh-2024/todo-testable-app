@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm") version "1.7.20"
     kotlin("plugin.spring") version "1.7.20"
 
-    id("org.springframework.boot") version "2.7.4"
+    id("org.springframework.boot") version "2.7.5"
     id("nebula.integtest") version "9.6.3"
 }
 
@@ -12,14 +12,14 @@ repositories {
 
 dependencies {
     implementation(enforcedPlatform(kotlin("bom")))
-    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.4"))
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.5"))
     implementation(platform("org.junit:junit-bom:5.9.1"))
 
     constraints {
         implementation("org.springdoc:springdoc-openapi-ui:1.6.12")
         implementation("io.strikt:strikt-core:0.34.1")
         implementation("io.mockk:mockk:1.13.2")
-        implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:3.4.11")
+        implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:3.5.2")
     }
 }
 
