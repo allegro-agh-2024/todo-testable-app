@@ -1,0 +1,301 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Testowanie</title>
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/black.css">
+    <link rel="stylesheet" href="fa/css/fontawesome.min.css">
+    <link rel="stylesheet" href="fa/css/solid.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+    <style>
+        body.dim-background .slide-background {
+            opacity: 0.4 !important;
+        }
+    </style>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section data-background="images/baner.jpg">
+            <h1>Testowanie</h1>
+            <h6>Adam Szadkowski, Tomek Kaczanowski</h6>
+        </section>
+        <section>
+            <section><h3>O nas</h3></section>
+            <section>
+                <h6>Tomek Kaczanowski</h6>
+                <small>Ex-developer. Niegdyś wielki miłośnik pisania testów (i o testach). Kiedyś kodował w Javie, dziś
+                    w google docs i gmailu. Od 2,5 roku w Allegro, opiekuje się zespołami Trafficu (SEO, PPC,
+                    Afiliacja)</small>
+                <img height="300" data-src="images/Practical-Unit-Testing-with-JUnit-and-Mockito.jpeg"/>
+                <img height="300" data-src="images/testy-zle-dobre-testy.png"/>
+            </section>
+            <section>
+                <h6>Adam Szadkowski</h6>
+                <small>Developer, który pracę zaczynał od systemów wbudowanych i programowania w asemblerze. W pracy
+                    skupiony na tematach clean code’owych i dobrych praktykach w programowaniu. Aktualnie współtworzy
+                    narzędzia wspomagające zespół PPC w Allegro. Prywatnie przewodnik psa Ziutka, amator gry na basie i
+                    fotografii.</small>
+                <img height="300" data-src="images/Ziutek.jpg"/>
+                <img height="300" data-src="images/gitara.jpg"/>
+            </section>
+        </section>
+        <section data-background-color="#002b36" data-background-image="images/building.gif"
+                 data-background-size="contain" data-state="dim-background">
+            <section>
+                <h3>Working Software Over Comprehensive Documentation ;)</h3>
+            </section>
+            <section>
+                <h6>Repository:</h6>
+                <p>
+                    <a href="https://github.com/adamszadkowski/notes-page">https://github.com/adamszadkowski/notes-page</a>
+                </p>
+            </section>
+            <section>
+                <h6>Wymagania:</h6>
+                <ul>
+                    <li class="fragment fade-in">IntelliJ IDEA</li>
+                    <li class="fragment fade-in">Java 11 lub 17</li>
+                </ul>
+            </section>
+            <section>
+                <p>Build command:</p>
+                <pre><code>$ ./gradlew clean build</code></pre>
+            </section>
+        </section>
+        <section data-background="images/code.jpg" data-state="dim-background">
+            <section>
+                <h3>Aplikacja</h3>
+            </section>
+            <section data-markdown="">
+                <textarea data-template>
+                    &gt; Talk is cheap. Show me the code.
+                    -- Linus Torvalds
+                </textarea>
+            </section>
+            <section>
+                <h6>Wymagania</h6>
+                <ul>
+                    <li class="fragment fade-in">Tworzenie TODOsów</li>
+                    <li class="fragment fade-in">Listowanie TODOsów</li>
+                    <li class="fragment fade-in">Separacja TODOsów między użytkownikami</li>
+                    <li class="fragment fade-in">Stała lista użytkowników w konfiguracji</li>
+                </ul>
+            </section>
+            <section>
+                <h6>Struktura aplikacji</h6>
+                <img width="30%" style="float: left;" data-src="images/project-structure.png"/>
+                <ul style="width: 50%; margin-top: 10%;">
+                    <li class="fragment fade-in"><small>Podział na kod produkcyjny, testy unitowe oraz testy
+                        integracyjne</small></li>
+                    <li class="fragment fade-in"><small>Przykładowe zapytania http do aplikacji znajdują się w folderze
+                        integTest/http</small></li>
+                    <li class="fragment fade-in"><small>Testy manualne można przeprowadzić korzystając z klasy
+                        LocalApplication w źródłach testów integracyjnych</small>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h6>Proces powstawania aplikacji</h6>
+                <img width="50%" style="float: left;" data-src="images/commits.png"/>
+                <ul style="width: 40%; margin-top: 10%;">
+                    <li class="fragment fade-in"><small>Patrząc na zmiany wprowadzane w kolejnych commitach można
+                        zaobserwować proces klarowania się architektury aplikacji</small></li>
+                    <li class="fragment fade-in"><small>Aplikacja została napisana zgodnie z “Londyńską” szkołą TDD
+                        (outside-in)</small></li>
+                    <li class="fragment fade-in"><small>Po więcej informacji o takim sposobie tworzenia kodu odsyłamy do
+                        prezentacji <a href="https://youtu.be/YjVrF_CQ06Q?t=2377">Allegro Tech Live #27 @
+                            youtube</a></small></li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Plan testów</h3>
+            </section>
+            <section>
+                <h6 class="fragment strike">Piramida testów</h6>
+                <h6 class="fragment fade-in">Bałagan testów</h6>
+            </section>
+            <section data-background="white">
+                <img data-src="images/tests.png"/>
+            </section>
+            <section data-background="white">
+                <h6>Bałagan testów</h6>
+                <img width="50%" style="float: left;" data-src="images/test-pyramid.png"/>
+                <small style="width: 40%; margin-top: 10%;">
+                    <ul>
+                        <li>Wymiary - koszt, szybkość, kto tworzy testy?</li>
+                        <li>To tylko model → dostosuj go!</li>
+                    </ul>
+                </small>
+            </section>
+            <section data-background="white">
+                <img data-src="images/aligned-test-pyramid.png"/>
+            </section>
+            <section>
+                <h6>Testy naszej apikacji</h6>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Unitowe</td>
+                        <td>Integracyjne</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <ul>
+                                <li>TodosServiceTest</li>
+                                <li>white box</li>
+                                <li>zależności zmockowane</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>TodosEndpointTest</li>
+                                <li>black box</li>
+                                <li>Spring context</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <img data-src="images/integration-tests.png" style="transform: translateY(-100px) rotate(-90deg)"/>
+            </section>
+        </section>
+        <section data-background="images/validation.jpg" data-state="dim-background">
+            <section>
+                <h3>Zadanie 1</h3>
+                <ul>
+                    <li>Context: Niektórzy użytkownicy wrzucają za długie lub puste nazwy todosów.</li>
+                    <li>Cel: Wymusić rozsądną długość nazw todosów.</li>
+                    <li>
+                        Kryteria akceptacyjne:
+                        <ul>
+                            <li>Nazwa todosa < 100 znaków</li>
+                            <li>Nazwa todosa > 0 znaków</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>
+                    <i class="fa fa-stopwatch"></i> Czas: 15 min
+                </p>
+            </section>
+            <section>
+                Dyskusja na temat rozwiązań
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>TDD i kilka prawd o testach</h3>
+                <img width="40%" style="float: left;" data-src="images/red_green_refactor.jpg"/>
+                <small style="width: 50%;">
+                    Mini-cykle:
+                    <ul>
+                        <li>You are not allowed to write any production code unless it is to make a failing unit test
+                            pass.
+                        </li>
+                        <li>You are not allowed to write any more of a unit test than is sufficient to fail; and
+                            compilation
+                            failures are failures.
+                        </li>
+                        <li>You are not allowed to write any more production code than is sufficient to pass the one
+                            failing
+                            unit test.
+                        </li>
+                    </ul>
+                    Source: <a href="https://blog.cleancoder.com/uncle-bob/2014/12/17/TheCyclesOfTDD.html">The Cycles of
+                    TDD</a>
+                </small>
+            </section>
+            <section data-background="white">
+                <h6>BDD i TDD</h6>
+                <img data-src="images/bdd-tdd.png"/>
+            </section>
+        </section>
+        <section data-background="images/padlock.jpg" data-state="dim-background">
+            <section>
+                <h3>Zadanie 2</h3>
+                <ul>
+                    <li>Context: Aplikacja pozwala wielu użytkownikom na tworzenie i wyświetlanie todosów. Brakuje testu
+                        weryfikującego czy dany użytkownik ma dostęp tylko do swoich todosów.
+                    </li>
+                    <li>Cel: Napisać brakujący test.</li>
+                    <li>
+                        Kryteria akceptacyjne:
+                        <ul>
+                            <li>Mamy test sprawdzający.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>
+                    <i class="fa fa-stopwatch"></i> Czas: 15 min
+                </p>
+            </section>
+            <section>
+                Dyskusja na temat rozwiązań
+            </section>
+        </section>
+        <section data-background="images/user.jpg" data-state="dim-background">
+            <section>
+                <h3>Zadanie 3</h3>
+                <ul>
+                    <li>Context: Aplikacja jest konfigurowana statyczną listą użytkowników podawaną w trakcie
+                        uruchomienia aplikacji, bez możliwości jej zmiany w trakcie pracy.
+                    </li>
+                    <li>Cel: Trzymać użytkowników w bazie.</li>
+                    <li>
+                        Kryteria akceptacyjne:
+                        <ul>
+                            <li>Możemy stworzyć użytkownika dynamicznie poprzez API restowe.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>
+                    <i class="fa fa-stopwatch"></i> Czas: 30 min
+                </p>
+            </section>
+            <section>
+                Dyskusja na temat rozwiązań
+            </section>
+        </section>
+        <section>
+            <h3>Co dalej?</h3>
+            <p>Czego jeszcze używamy:</p>
+            <ul>
+                <li><a href="https://martinfowler.com/bliki/TestDouble.html">Test doubles</a></li>
+                <li>CI/CD pipelines</li>
+                <li>code reviews</li>
+            </ul>
+        </section>
+        <section data-background="images/baner.jpg">
+            <h2 style="text-shadow: 5px 5px 20px black">Dzięki i miłego testowania!</h2>
+        </section>
+    </div>
+</div>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+</script>
+</body>
+</html>
