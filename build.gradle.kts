@@ -15,12 +15,12 @@ repositories {
 dependencies {
     implementation(enforcedPlatform(kotlin("bom")))
     implementation(platform("org.springframework.boot:spring-boot-dependencies:3.1.4"))
-    implementation(platform("org.junit:junit-bom:5.9.1"))
+    implementation(platform("org.junit:junit-bom:5.10.0"))
 
     constraints {
         implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
         implementation("io.strikt:strikt-core:0.34.1")
-        implementation("io.mockk:mockk:1.13.2")
+        implementation("io.mockk:mockk:1.13.8")
         implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x:4.9.3")
     }
 }
