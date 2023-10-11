@@ -1,7 +1,6 @@
 package pl.allegro.agh.distributedsystems.todo.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,7 +17,6 @@ class UsersConfiguration(
     fun userRepository(): UserRepository = PropertiesUserRepository(properties)
 }
 
-@ConstructorBinding
 @ConfigurationProperties("app")
 data class UserProperties(
     val users: List<User> = emptyList(),

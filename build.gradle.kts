@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm") version "1.9.10"
     kotlin("plugin.spring") version "1.9.10"
 
-    id("org.springframework.boot") version "2.7.5"
+    id("org.springframework.boot") version "3.1.4"
     id("nebula.integtest") version "9.6.3"
 }
 
@@ -12,14 +12,14 @@ repositories {
 
 dependencies {
     implementation(enforcedPlatform(kotlin("bom")))
-    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.5"))
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:3.1.4"))
     implementation(platform("org.junit:junit-bom:5.9.1"))
 
     constraints {
         implementation("org.springdoc:springdoc-openapi-ui:1.6.12")
         implementation("io.strikt:strikt-core:0.34.1")
         implementation("io.mockk:mockk:1.13.2")
-        implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:3.5.2")
+        implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x:4.9.3")
     }
 }
 
@@ -37,7 +37,7 @@ dependencies {
 
     integTestImplementation("org.springframework.boot:spring-boot-starter-test")
     integTestImplementation("org.springframework.security:spring-security-test")
-    integTestImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
+    integTestImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
