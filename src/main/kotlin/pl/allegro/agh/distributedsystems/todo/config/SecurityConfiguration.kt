@@ -21,7 +21,14 @@ class SecurityConfiguration {
     fun filterChain(http: HttpSecurity): SecurityFilterChain = http
         .csrf { it.disable() }
         .authorizeHttpRequests {
-            it.requestMatchers("/todos/**").authenticated()
+            it
+                .requestMatchers("/todos/**").authenticated()
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "v3/api-docs/**",
+                    "/v2/api-docs/**",
+                    "/swagger-resources/**",
+                ).permitAll()
         }
         .httpBasic { }
         .build()
