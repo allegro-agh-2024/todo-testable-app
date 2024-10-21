@@ -1,6 +1,7 @@
 package pl.allegro.agh.distributedsystems.todo.api
 
-import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pl.allegro.agh.distributedsystems.todo.domain.todos.Todo
 import pl.allegro.agh.distributedsystems.todo.domain.todos.TodosService
@@ -12,11 +13,11 @@ class TodosEndpoint(
     private val todosService: TodosService,
 ) {
 
-    @GetMapping(produces = ["application/json"])
+    @GetMapping(produces = [APPLICATION_JSON_VALUE])
     fun todosList(principal: Principal) =
         todosService.getAll(principal.name).toDto()
 
-    @PostMapping(consumes = ["application/json"])
+    @PostMapping(consumes = [APPLICATION_JSON_VALUE], produces = [APPLICATION_JSON_VALUE])
     fun saveTodo(principal: Principal, @RequestBody saveTodoDto: SaveTodoDto) =
         todosService.save(principal.name, saveTodoDto.name).toDto()
 
@@ -24,8 +25,9 @@ class TodosEndpoint(
     private fun Todo.toDto() = TodoDto(name, id)
 
     @ExceptionHandler(TodosService.CannotSaveException::class)
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Cannot save todo")
-    fun handleSaveException() {
+    fun handleSaveException(e: TodosService.CannotSaveException): ResponseEntity<Map<String, Any>> {
+        val message = e.message ?: "Cannot save todo"
+        return ResponseEntity.badRequest().body(mapOf("error" to message))
     }
 }
 
