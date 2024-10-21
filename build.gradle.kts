@@ -44,6 +44,10 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
